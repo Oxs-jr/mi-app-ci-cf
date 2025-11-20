@@ -1,0 +1,28 @@
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  image: node:14-alpine
+  script:
+    - npm install
+    - npm test
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t mi-app-ci-cd .
+    - echo "🐳 Imagen construida con éxito."
+
+deploy:
+  stage: deploy
+  image: alpine
+  script:
+    - echo "🚀 Despliegue simulado."
+  only:
+    - main
